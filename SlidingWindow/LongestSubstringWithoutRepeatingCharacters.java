@@ -47,6 +47,7 @@ class Solution {
                     left++;
                 }
                 set.add(rightChar);
+                // we do not update maxLength here, as left has increased so, currentLength cannot beat the maxLength
             }
             right++;
         }
@@ -54,3 +55,28 @@ class Solution {
     }
 }
 
+class Solution {
+    // OPTIMAL
+    // refer STRIVER's video 
+    // T: O(n), S: O(n)
+    public int lengthOfLongestSubstring(String s) {
+        int left = 0, right = 0;
+        int n = s.length();
+        int maxLength = 0;
+        Map<Character, Integer> map = new HashMap<>();
+
+        while (right < n) {
+            char rightChar = s.charAt(right);
+            // left is jumping instead of sliding to optimise more
+            // check whether left is in the window under consideration
+            if (map.containsKey(rightChar)) {
+                left = Math.max(left, map.get(rightChar) + 1);
+            }
+
+            maxLength = Math.max(maxLength, right - left + 1);
+            map.put(rightChar, right);
+            right++;
+        }
+        return maxLength;
+    }
+}
