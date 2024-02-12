@@ -47,3 +47,31 @@ class Solution {
         return maxLength;
     }
 }
+class Solution {
+    // OPTIMAL
+    // refer Neetcode's video
+    // T: O(n), S: O(26)
+    public int characterReplacement(String s, int k) {
+        int maxLength = 0;
+        int n = s.length();
+        int left = 0, right = 0;
+        int[] freq = new int[26];
+        int maxFrequency = 0;
+
+        while (right < n) {
+            char ch = s.charAt(right);
+            freq[ch - 'A']++;
+            maxFrequency = Math.max(maxFrequency, freq[ch - 'A']);
+
+            // count of non-repeating characters should be <= k for a valid window
+            // when window is invalid, we start sliding the window
+            if ((right - left + 1) - maxFrequency > k) {
+                freq[s.charAt(left) - 'A']--;
+                left++;
+            }
+            maxLength = Math.max(maxLength, right - left + 1);
+            right++;
+        }
+        return maxLength;
+    }
+}
