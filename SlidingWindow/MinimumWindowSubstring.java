@@ -1,6 +1,7 @@
 class Solution {
     // BRUTE FORCE
-    // T: O(m*m*52) - as max 52 unique characters in both maps (including 26 upper case and 26 lower case) S: O(52 + m*52) - max map space is 52, "have" map is created maximum m times
+    // T: O(m*m*52) - as max 52 unique characters in both maps (including 26 upper case and 26 lower case) 
+    // S: O(52 + m*52) - max map space is 52, "have" map is created maximum m times
     public String minWindow(String s, String t) {
         int minLength = Integer.MAX_VALUE;
         int m = s.length();
