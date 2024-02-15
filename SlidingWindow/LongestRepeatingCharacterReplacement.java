@@ -47,6 +47,7 @@ class Solution {
         return maxLength;
     }
 }
+
 class Solution {
     // OPTIMAL
     // refer Neetcode's video
@@ -65,7 +66,7 @@ class Solution {
 
             // count of non-repeating characters should be <= k for a valid window
             // when window is invalid, we start sliding the window
-            if ((right - left + 1) - maxFrequency > k) {
+            while ((right - left + 1) - maxFrequency > k) {
                 freq[s.charAt(left) - 'A']--;
                 left++;
             }
