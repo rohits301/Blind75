@@ -37,3 +37,43 @@ class Solution {
     }
 }
 
+class Solution {
+    // OPTIMAL
+    // T: O(m+n), S: O(128) max as maximum unique characters is 128 
+    // (upper and lowercase combined)
+    public String minWindow(String s, String t) {
+        int[] freq = new int[128];
+
+        for (char ch : t.toCharArray()) {
+            freq[ch]++;
+        }
+
+        int left = 0;
+        int minLength = s.length() + 1;
+        int need = t.length();
+        int minStart = 0;
+
+        for (int right = 0; right < s.length(); right++) {
+            char rightChar = s.charAt(right);
+            if (freq[rightChar] > 0) {
+                need--; // denotes required character is found
+            }
+            freq[rightChar]--; // acquire
+
+            while (need == 0) {
+                if (minLength > (right - left + 1)) {
+                    minLength = right - left + 1;
+                    minStart = left;
+                }
+
+                char leftChar = s.charAt(left);
+                freq[leftChar]++; // release
+                if (freq[leftChar] > 0) {
+                    need++; // released a character that must be included
+                }
+                left++;
+            }
+        }
+        return minLength > s.length() ? "" : s.substring(minStart, minStart + minLength);
+    }
+}
