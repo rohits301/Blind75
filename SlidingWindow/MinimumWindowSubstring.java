@@ -1,9 +1,9 @@
 class Solution {
     // BRUTE FORCE
-    // T: O(m*n*128), S: O(128*2) - max map space is 128+128 unique characters (upper and lowercase combined)
+    // T: O(m*m*52) - as max 52 unique characters in both maps (including 26 upper case and 26 lower case) S: O(52 + m*52) - max map space is 52, "have" map is created maximum m times
     public String minWindow(String s, String t) {
         int minLength = Integer.MAX_VALUE;
-        int n = s.length();
+        int m = s.length();
         int minStart = -1;
         Map<Character, Integer> need = new HashMap<>();
 
@@ -11,9 +11,9 @@ class Solution {
             need.put(ch, need.getOrDefault(ch, 0) + 1);
         }
 
-        for (int i = 0; i < n; i++) {
+        for (int i = 0; i < m; i++) {
             Map<Character, Integer> have = new HashMap<>();
-            for (int j = i; j < n; j++) {
+            for (int j = i; j < m; j++) {
                 char ch = s.charAt(j);
                 have.put(ch, have.getOrDefault(ch, 0) + 1);
 
