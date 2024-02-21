@@ -63,7 +63,7 @@ class Solution {
         ListNode first = head;
         ListNode second = prev;
 
-        while(second  != null){
+        while(second != null){
             ListNode temp1 = first.next;
             ListNode temp2 = second.next;
             first.next = second;
