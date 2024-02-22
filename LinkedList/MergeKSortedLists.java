@@ -13,7 +13,7 @@ class Solution {
     // refer STRIVER's video
     // T: O(n*k*(k+1)/2), S: O(1)
     public ListNode mergeKLists(ListNode[] lists) {
-        if (lists == null || lists.length == 0) {
+        if (lists.length == 0) {
             return null;
         }
 
@@ -21,7 +21,6 @@ class Solution {
         for (int i = 1; i < lists.length; i++) {
             head = mergeTwoSortedLists(head, lists[i]);
         }
-
         return head;
     }
 
@@ -52,7 +51,7 @@ class Solution {
 class Solution {
     // BETTER
     // refer STRIVER video
-    // T: O(n*k*log k) = O(k*log k+ n*k*logk), S: O(k)
+    // T: O(n*k*logk) = O(k*logk+ n*k*logk), S: O(k)
     public ListNode mergeKLists(ListNode[] lists) {
         if (lists.length == 0) {
             return null;
