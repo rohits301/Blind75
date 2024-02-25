@@ -14,8 +14,9 @@
  * }
  */
 class Solution {
+    // refer NEETCODE for all 3 approaches and STRIVER for tc and sc
     // Recursive DFS
-    // T: O(n), S: O(n) - recursion stack
+    // T: O(n), S: O(n) - auxilary space of recursion - O(height), worst case - skewed tree
     // Most preferred
     public int maxDepth(TreeNode root) {
         if (root == null) {
@@ -30,7 +31,7 @@ class Solution {
 
 class Solution {
     // Iterative BFS
-    // T: O(n), S: O(n) - queue
+    // T: O(n), S: O(n) - queue, Worst case is complete binary tree, last level has maximum nodes
     public int maxDepth(TreeNode root) {
         if (root == null) {
             return 0;
@@ -60,7 +61,6 @@ class Solution {
 
 class Solution {
     // Iterative DFS
-    // refer NEETCODE
     // T: O(n), S: O(n) - space of adding a Pair to stack
     public int maxDepth(TreeNode root) {
         if (root == null) {
