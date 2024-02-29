@@ -14,7 +14,8 @@
  * }
  */
 class Solution {
-    // T: O(s*t), S: O(s+t)
+    // refer NEETCODE
+    // T: O(s*t), S: O(s+t), s = no. of nodes in root tree, t = no. of nodes in subRoot tree
     public boolean isSubtree(TreeNode root, TreeNode subRoot) {
         if (subRoot == null)
             return true;

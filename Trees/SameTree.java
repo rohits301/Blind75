@@ -18,7 +18,7 @@ class Solution {
     // T: O(n), S: O(n)
     public boolean isSameTree(TreeNode p, TreeNode q) {
         if(p == null || q == null){
-            return (p == q);
+            return (p == null && q == null);
         }
 
         return p.val == q.val &&
