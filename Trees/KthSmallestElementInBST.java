@@ -37,7 +37,7 @@ class Solution {
     // BETTER 
     // count and ans are taken as static variables
     // as Java does not support pass by reference
-    // T: O(height), S: O(n) - auxillary space
+    // T: O(height), S: O(height) - auxillary space
     int count = 0;
     int ans = 0;
 
@@ -64,7 +64,7 @@ class Solution {
     // refer STRIVER
     // Morris Traversal - inorder, only change, instead of adding to list
     // we increase count and store the value in ans
-    // T: O(n), S: O(1)
+    // T: O(n) - Amortized, S: O(1)
     public int kthSmallest(TreeNode root, int k) {
         int count = 0, ans = 0;
         
