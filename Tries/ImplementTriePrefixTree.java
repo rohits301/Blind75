@@ -1,6 +1,11 @@
 class TrieNode {
-    TrieNode[] children = new TrieNode[26];
+    TrieNode[] children;
     boolean flag;
+
+    TrieNode() {
+        children = new TrieNode[26];
+        flag = false;
+    }
 
     boolean contains(char ch) {
         return (children[ch - 'a'] != null);
