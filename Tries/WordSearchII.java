@@ -5,7 +5,7 @@ class Solution {
     // T: O(w*(m*n)*4^L), L=length of word, w = no. of words in words[]
     // S: O(L) - recursion stack space
     // use set to avoid returning multiple occurrences of the same word in the board, 
-    // e.g. words["oa", "oaa"] in the board of 
+    // e.g. words["oa", "oaa"] in the board of [["o","a","b","n"],["o","t","a","e"],["a","h","k","r"],["a","f","l","v"]]
     public List<String> findWords(char[][] board, String[] words) {
         Set<String> set = new HashSet<>();
 
@@ -32,17 +32,15 @@ class Solution {
         }
         
         boolean res = false;
-        if (board[i][j] == word.charAt(idx)) {
-            char temp = board[i][j];
-            board[i][j] = '#';
+        char temp = board[i][j];
+        board[i][j] = '#';
 
-            res = dfs(board, i - 1, j, word, idx + 1) ||
-                  dfs(board, i, j - 1, word, idx + 1) ||
-                  dfs(board, i + 1, j, word, idx + 1) ||
-                  dfs(board, i, j + 1, word, idx + 1);
+        res = dfs(board, i - 1, j, word, idx + 1) ||
+              dfs(board, i, j - 1, word, idx + 1) ||
+              dfs(board, i + 1, j, word, idx + 1) ||
+              dfs(board, i, j + 1, word, idx + 1);
 
-            board[i][j] = temp;
-        }
+        board[i][j] = temp;
         return res;
     }
 }

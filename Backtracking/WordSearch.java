@@ -25,17 +25,15 @@ class Solution {
         }
 
         boolean res = false;
-        if (board[i][j] == word.charAt(idx)) {
-            char temp = board[i][j];
-            board[i][j] = '#'; // mark visited
+        char temp = board[i][j];
+        board[i][j] = '#'; // mark visited
 
-            res = dfs(board, i - 1, j, word, idx + 1) ||
-                  dfs(board, i, j - 1, word, idx + 1) ||
-                  dfs(board, i + 1, j, word, idx + 1) ||
-                  dfs(board, i, j + 1, word, idx + 1);
+        res = dfs(board, i - 1, j, word, idx + 1) ||
+                dfs(board, i, j - 1, word, idx + 1) ||
+                dfs(board, i + 1, j, word, idx + 1) ||
+                dfs(board, i, j + 1, word, idx + 1);
 
-            board[i][j] = temp; // unvisit
-        }
+        board[i][j] = temp; // unvisit
         return res;
     }
 }
