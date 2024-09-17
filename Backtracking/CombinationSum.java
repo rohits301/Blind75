@@ -1,8 +1,12 @@
 class Solution {
     // refer STRIVER
     // Brute/better/optimal
-    // T: O(2^target * k); k=time to add in list assuming avg. length of ans generated is k, 2^target as length of tree is target
-    // S: O(k*n) -> n = no. of combinations
+    // T: O((2^target) * k); 
+    // 2^target as length of tree is target
+    // assume avg. length of list generated is k
+    // and time to add this `list` to answer is proportional to length of list 
+    // hence, we multiple both
+    // S: O(k*x); x = no. of combinations
     public List<List<Integer>> combinationSum(int[] candidates, int target) {
         List<List<Integer>> ans = new ArrayList<>();
         helper(candidates, 0, target, ans, new ArrayList<>());
