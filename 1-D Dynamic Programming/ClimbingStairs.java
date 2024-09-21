@@ -1,4 +1,28 @@
 class Solution {
+    // Parameterized recursion
+    // own solution
+    // TLE (BRUTE FORCE)
+    // T: O(2^n)
+    // S: O(n)
+    public int climbStairs(int n) {
+        return dfs(0, n);
+    }
+    private int dfs(int idx, int n){
+        if(idx == n){
+            return 1;
+        }
+        if(idx > n){
+            return 0;
+        }
+
+        int count = 0;
+        count += dfs(idx+1, n);
+        count += dfs(idx+2, n);
+        return count;
+    }
+}
+
+class Solution {
     // refer STRIVER DP-1 video
     // BRUTE FORCE, TLE
     // similar to Fibonacci numbers sequence
