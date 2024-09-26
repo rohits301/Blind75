@@ -100,3 +100,23 @@ class Solution {
         return prev;
     }
 }
+
+class Solution {
+    // refer NEETCODE
+    // Fibonacci Like Solution (OPTIMAL - SPACE OPTIMIZED)
+    // T:O(n); saving unnecessary calls
+    // S:O(1); no extra space reqd.
+    // we only need last two to calculate the answer
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+        int prev1 = 0; // last value
+        int prev2 = 0; // second last value
+        for(int i=0; i<n; i++){
+            int temp = Math.max(prev1, prev2 + nums[i]); // the max if I don't take nums[i], if I take nums[i]
+            prev2 = prev1;
+            prev1 = temp;
+        }
+        return prev1;
+    }
+}
