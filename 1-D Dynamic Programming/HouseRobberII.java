@@ -1,6 +1,71 @@
 class Solution {
+    // refer LC solutions
+    // RECURSION - BRUTE FORCE
+    // building upon solution for house robber 1
+    // only change is for circular array, two types of start and end
+    // T: O(n^2); time taken by robHelper function
+    // S: O(n); space taken
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            return nums[0];
+        }
+
+        return Math.max(robHelper(nums, 0, n - 2), robHelper(nums, 1, n - 1));
+    }
+
+    private int robHelper(int[] arr, int start, int end) {
+        if (start > end) {
+            return 0;
+        }
+
+        int pick = arr[start] + robHelper(arr, start + 2, end);
+        int notPick = robHelper(arr, start + 1, end);
+        return Math.max(pick, notPick);
+    }
+}
+
+class Solution {
+    // refer LC solutions
+    // MEMOIZATION - TOP-DOWN (BETTER)
+    // building upon solution for house robber 1
+    // only change is for circular array, two types of start and end
+    // we keep two separate dp arrays for result of the calls
+    // T: 2*O(n); time taken by robHelper function is O(n)
+    // S: 2*O(n); space taken
+
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if (n == 1) {
+            return nums[0];
+        }
+
+        int[] dp1 = new int[n];
+        int[] dp2 = new int[n];
+        Arrays.fill(dp1, -1);
+        Arrays.fill(dp2, -1);
+
+        return Math.max(robHelper(nums, 0, n - 2, dp1), robHelper(nums, 1, n - 1, dp2));
+    }
+
+    private int robHelper(int[] arr, int start, int end, int[] dp) {
+        if (start > end) {
+            return 0;
+        }
+        if (dp[start] != -1) {
+            return dp[start];
+        }
+
+        int pick = arr[start] + robHelper(arr, start + 2, end, dp);
+        int notPick = robHelper(arr, start + 1, end, dp);
+        return dp[start] = Math.max(pick, notPick);
+    }
+}
+
+class Solution {
     // refer STRIVER
-    // OPTIMAL 
+    // OPTIMAL - TABULATION
     // building upon solution for house robber 1
     // T: O(n); time taken by helper function is O(n)
     // S: O(n); space taken by both lists
@@ -48,7 +113,7 @@ class Solution {
 
 class Solution {
     // refer NEETCODE
-    // OPTIMAL - Space Optimized
+    // MOST OPTIMAL - Space Optimized
     // building upon solution for house robber 1
     // only change is for circular array, two types of start and end
     // T: O(n); time taken by robHelper function is O(n)
