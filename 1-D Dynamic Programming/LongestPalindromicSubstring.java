@@ -117,3 +117,35 @@ class Solution {
         return s.substring(i, j + 1);
     }
 }
+
+class Solution {
+    // refer Java brains
+    // T: O(n^2), S: O(n)
+    // The check when start from middle and expand, we are able to check all possible substrings and it saves us an entire loop of first finding the substrings and then checking whether they are palindrome
+    public String longestPalindrome(String s) {
+        if (s.length() < 2) {
+            return s;
+        }
+
+        int[] ans = new int[2];
+        for (int start = 0; start < s.length() - 1; start++) {
+            expandAroundCenter(s, start, start, ans); // odd length palindromes
+            expandAroundCenter(s, start, start + 1, ans); // even length palindromes
+        }
+        int resStart = ans[0];
+        int resLength = ans[1];
+        return s.substring(resStart, resStart + resLength);
+    }
+
+    private void expandAroundCenter(String s, int begin, int end, int[] ans) {
+        while (begin >= 0 && end < s.length()
+                && s.charAt(begin) == s.charAt(end)) {
+            begin--;
+            end++;
+        }
+        if (ans[1] < (end - begin - 1)) {
+            ans[0] = begin + 1;
+            ans[1] = end - begin - 1;
+        }
+    }
+}
