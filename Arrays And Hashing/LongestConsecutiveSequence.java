@@ -48,6 +48,8 @@ class Solution {
             } else if (nums[i] != lastSmaller) {
                 count = 1;
                 lastSmaller = nums[i];
+            } else if (nums[i] == nums[i-1]){ //skip when duplicate
+                continue;
             }
             longest = Math.max(longest, count);
         }
