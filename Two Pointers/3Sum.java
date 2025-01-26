@@ -89,6 +89,7 @@ class Solution {
 
                     // to avoid duplicate j and duplicate k
                     while(j<k && nums[j] == nums[j-1]) j++;
+                    // for k, the previous element is k+1
                     while(j<k && nums[k] == nums[k+1]) k--;
                 }
             }
