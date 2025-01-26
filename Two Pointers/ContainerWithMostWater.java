@@ -1,4 +1,5 @@
 class Solution {
+    // refer NEETCODE - all approaches
     // BRUTE FORCE
     // T: O(n^2), S: O(1)
     public int maxArea(int[] height) {
@@ -29,6 +30,13 @@ class Solution {
 
             // by shifting the idx with smaller height, there is greater possibility of
             // getting maximum area container
+            /**
+             * For equal heights (height[i] == height[j]), either index can be shifted.
+             * For unequal heights, shift the index with the smaller height to maximize the chance of finding a larger area.
+             * This is because a taller height at the new index could increase the area, even with reduced width.
+             * Shifting the larger height reduces the width without improving the limiting height, resulting in a smaller area.
+             */
+
             if (height[i] < height[j]) {
                 i++;
             } else {
