@@ -76,8 +76,8 @@ class Solution {
         dp[n - 1] = true; // at n-1, I need no jumps, i.e., 0 jumps, to reach n-1. Hence, always true.
 
         // we explore all options(jumps) for each index
-        // if there is even one true for a jump, that indicates, it is possible to reach
-        // end index from there
+        // if there is even one true for a jump, that indicates,
+        // it is possible to reach end index from there
         // hence, for every dp[jump] = true, we have dp[i] = true;
         // and we don't need to process for other jumps for same "i"
         for (int i = n - 2; i >= 0; i--) {
