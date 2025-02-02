@@ -45,7 +45,7 @@ class Solution {
     // OPTIMAL (KADANE'S ALGO.)
     // T: O(n), S: O(1)
     // to find the maximum sum, we will not add any number
-    // that makes sum = -ve, as including it we can never achieve max sum, hence, we
+    // that makes overall sum = -ve, as including it we can never achieve max total sum, hence, we
     // neglect that sum and reset it.
     // print the subarray (commented code) - STRIVER
     public int maxSubArray(int[] nums) {
