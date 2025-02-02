@@ -62,8 +62,11 @@ class Solution {
     public int rob(int[] nums) {
         int n = nums.length;
         int[] dp = new int[n];
-        dp[0] = nums[0];
+        dp[0] = nums[0]; // max(pick, notPick) => max(nums[0], 0) = nums[0]
 
+        // for i= 1
+        // pick = nums[1]
+        // notPick = 0 + dp[0] = nums[0]
         for (int i = 1; i < n; i++) {
             int pick = nums[i];
             if (i > 1) {
