@@ -48,7 +48,7 @@ class Solution {
     }
 }
 
-class Solution {
+class Solution { 
     // refer STRIVER
     // OPTIMAL
     // single-pass solution
@@ -57,35 +57,34 @@ class Solution {
     public int[][] merge(int[][] intervals) {
         int n = intervals.length;
         List<int[]> res = new ArrayList<>();
-        // APPROACH -
-        // STEP 1.
-        // sort the array on starting index
-        // STEP 2.
-        // if the start of intervals[i] is less than the end index of lastElement in result
-        // then we have a new interval, add it to list
-        // else
-        // update the end index of the lastElement with max(lastElement end index, intervals[i][1])
-
-        // this is the intended sorting as per the solution video.
+        
+        // STEP 1: Sort the array on starting index, 
+        // if the start is same, sort by end index in ascending order
         Arrays.sort(intervals, (a, b) -> {
-            int compareResult = Integer.compare(a[0], b[0]);
-            if(compareResult == 0){
-                return Integer.compare(b[1], a[1]); // desc. of end indices
+            int compareStart = Integer.compare(a[0], b[0]);
+            if(compareStart == 0) {
+                return Integer.compare(a[1], b[1]); // Ascending order for end index
             }
-            return compareResult;
+            return compareStart;
         });
 
+        // STEP 2: Iterate through intervals
         for (int i = 0; i < n; i++) {
             int start = intervals[i][0];
             int end = intervals[i][1];
-            // start of intervals[i] is greater than the end index of last merged interval -> cannot be merged, add separately
+
+            // Check if result list is empty or if current interval does not overlap with the last one
             if (res.isEmpty() || start > res.get(res.size() - 1)[1]) {
+                // No overlap, so add the interval to result
                 res.add(intervals[i]);
             } else {
-                res.get(res.size() - 1)[1] = Math.max(res.get(res.size() - 1)[1], intervals[i][1]);
+                // Overlapping interval, so merge by updating the end
+                int lastEnd = res.get(res.size() - 1)[1];
+                res.get(res.size() - 1)[1] = Math.max(lastEnd, end);
             }
         }
 
-        return res.toArray(new int[res.size()][]);
+        return res.toArray(new int[res.size()][]); // Convert list to array
     }
 }
+
