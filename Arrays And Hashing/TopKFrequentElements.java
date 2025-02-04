@@ -24,30 +24,135 @@ class Solution {
         return ans;
     }
 }
+
 class Solution {
-    // BETTER
-    // T: O(k log D), S: O(D + D = D), D = no. of distinct elements, time to build heap is O(D)
+    // refer Aditya Verma
+    // T: O(nlogk), S: O(n+k)
+    /**
+     * Approach: Min Heap (Priority Queue)
+     * 
+     * 1. Build a frequency map  
+     *    - Use a HashMap to count the occurrences of each number in nums.  
+     *    - Example:  
+     *      Input: [10, 20, 20, 20, 20, 20, 30, 30, 10, 20, 30]  
+     *      Frequency Map: {10 -> 2, 20 -> 6, 30 -> 3}  
+     *
+     * 2. Use a Min Heap (PriorityQueue) to store the top K elements  
+     *    - A Min Heap is used to keep track of the k most frequent elements.  
+     *    - The heap stores numbers sorted by their frequency in ascending order.  
+     *    - The heap only keeps k elements, removing the least frequent ones as new elements are added.  
+     *    - Example:  
+     *      - Insert 10 (freq: 2) → heap: [10]  
+     *      - Insert 20 (freq: 6) → heap: [10, 20]  
+     *      - Insert 30 (freq: 3) → heap: [10, 30] (removes 10, since freq 2 < freq 3)  
+     *
+     * 3. Extract the top K elements from the heap  
+     *    - Since the heap stores only k elements, the top K frequent numbers are extracted.  
+     *
+     * Time Complexity Analysis:  
+     * - Building frequency map → O(n), where n is the number of elements in nums.  
+     * - Adding elements to Min Heap → O(n log k):  
+     *   - Each insertion in a heap takes O(log k).  
+     *   - Since we insert n elements into the heap (removing when size > k), it results in O(n log k).  
+     * - Extracting elements from the heap → O(k log k):  
+     *   - Extracting k elements takes O(k log k).  
+     * - Overall Complexity → O(n log k).  
+     *
+     * Space Complexity Analysis:  
+     * - HashMap stores frequencies → O(n).  
+     * - Min Heap stores k elements → O(k).  
+     * - Output array stores k elements → O(k).  
+     * - Overall Complexity → O(n + k).  
+     */
+
     public int[] topKFrequent(int[] nums, int k) {
-        
-        // create a freq. map
-        HashMap<Integer, Integer> map = new HashMap<>();
-        for(int num : nums){
-            map.put(num, map.getOrDefault(num, 0)+1);
+        Map<Integer, Integer> map = new HashMap<>();
+
+        // Step 1: Build the frequency map
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
         }
 
-        // initialize a max heap of keys
-        PriorityQueue<Integer> maxHeap = new PriorityQueue<>((a,b)-> map.get(b) - map.get(a)); 
+        // Step 2: Min Heap to store top k frequent elements
+        PriorityQueue<Integer> minHeap = new PriorityQueue<>((a, b) -> map.get(a) - map.get(b));
 
-        // buildHeap in O(D)
-        for(int key : map.keySet()){
-            maxHeap.add(key);
+        // Step 3: Add elements to the heap
+        for (int key : map.keySet()) {
+            minHeap.offer(key);
+            if (minHeap.size() > k) {
+                minHeap.poll(); // Remove the element with the lowest frequency
+            }
         }
 
-        // poll the top k items
+        // Step 4: Extract top k elements from the heap
         int[] res = new int[k];
-        for(int i=0; i<k; i++){
-            res[i] = maxHeap.poll();
+        for (int i = 0; i < k; i++) {
+            res[i] = minHeap.poll();
         }
+
+        return res;
+    }
+}
+
+class Solution {
+    // REFER NEETCODE
+    // T: O(n), S: O(n)
+    // Bucket Sort
+
+    /**
+     * APPROACH:
+     * 
+     * 1. Use a HashMap to count the frequency of each element:
+     *    - Iterate through `nums` and maintain a frequency count in a HashMap.
+     *    - Example:
+     *      Input: [10,20,20,20,20,20,30,30,10,20,30]
+     *      Frequency Map: {10 -> 2, 20 -> 6, 30 -> 3}
+     * 
+     * 2. Use a frequency bucket (Array of Lists) to store numbers with the same frequency:
+     *    - Create an array `freq` where `freq[i]` holds a list of numbers that appear exactly `i` times.
+     *    - The maximum possible frequency of any element is `nums.length`, so `freq` has `nums.length + 1` buckets.
+     *    - Example after processing:
+     *      `freq[2] -> {10}, freq[3] -> {30}, freq[6] -> {20}`
+     * 
+     * 3. Collect the top K frequent elements:
+     *    - Iterate from the highest possible frequency (`nums.length`) down to `1`.
+     *    - Extract elements from `freq[i]` and add them to the result array until `k` elements are collected.
+     * 
+     */
+
+    public int[] topKFrequent(int[] nums, int k) {
+        Map<Integer, Integer> map = new HashMap<>();
+        List<Integer>[] freq = new List[nums.length + 1];
+
+        // Initialize the bucket array with empty lists
+        for (int i = 0; i < freq.length; i++) {
+            freq[i] = new ArrayList<>();
+        }
+
+        // Step 1: Build the frequency map
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        // Step 2: Populate the frequency bucket
+        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
+            freq[entry.getValue()].add(entry.getKey());
+        }
+
+        // Step 3: Collect top k frequent elements
+        int[] res = new int[k];
+        int idx = 0;
+        
+        // Iterate from highest frequency to lowest
+        for (int i = freq.length - 1; i > 0 && idx < k; i--) {
+            for (int f : freq[i]) {
+                res[idx++] = f;
+                if (idx == k) {
+                    return res; // Return early if we have found k elements
+                }
+            }
+        }
+
         return res;
     }
 }
