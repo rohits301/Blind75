@@ -56,8 +56,8 @@ class Solution {
         }
 
         // in case of cycle, or invalid topo sort
-        // the array is still populated
-        // but the idx != V
+        // the indegree array is not empty, no items in queue
+        // so the idx != V
         // Test Case: 
         // prerequisites = [[0,1],[1,0]]
         // numCourses = 2
