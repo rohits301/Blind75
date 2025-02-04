@@ -3,6 +3,7 @@ class Solution {
     // BRUTE FORCE
     // T: O(nlogn) + O(2n); sorting + loop, every element is visited twice at max
     // S: O(n); answer array
+    // e.g. [[1,3],[2,6],[8,9],[9,12],[8,10],[2,4],[15,16],[16,17]]
     public int[][] merge(int[][] intervals) {
         int n = intervals.length;
         List<int[]> res = new ArrayList<>();
