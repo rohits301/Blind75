@@ -1,9 +1,13 @@
 class Solution {
     // refer STRIVER
     // BRUTE FORCE
-    // T: O(nlogn) + O(2n); sorting + loop, every element is visited twice at max
+    // T: O(nlogn) + O(2n); sorting + loop, every element is visited twice at max, once in the outer for to decide whether already contained in a merged interval
+    // and the next time when merging the interval 
     // S: O(n); answer array
-    // e.g. [[1,3],[2,6],[8,9],[9,12],[8,10],[2,4],[15,16],[16,17]]
+    // e.g. [[1,3],[2,6],[8,9],[9,12],[8,10],[2,4],[15,18],[16,17]]
+    // sorted -> [16,17]
+    // [1,6], [8,12], [15,18] - res
+    // [16,17] - 17 <= 18
     public int[][] merge(int[][] intervals) {
         int n = intervals.length;
         List<int[]> res = new ArrayList<>();
@@ -25,6 +29,7 @@ class Solution {
 
             // already contained in the interval
             // current end idx <= end idx of last element in result
+            // 4 <= 6
             if (!res.isEmpty() && end <= res.get(res.size() - 1)[1]) {
                 continue;
             }
