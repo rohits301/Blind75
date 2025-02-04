@@ -22,6 +22,7 @@ class Solution {
 
         // Kahn's algo - TOPO sort
         // 1. create indegree[]
+        // number of incoming edges is indegree
         int[] indegree = new int[V];
         for (int i = 0; i < V; i++) {
             for (int nbr : adj.get(i)) {
