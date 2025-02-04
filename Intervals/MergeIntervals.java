@@ -10,11 +10,11 @@ class Solution {
         // STEP 1.
         // sort the array on starting index
         // STEP 2.
-        // if the end of intervals[i] is less than the end index of element in result
+        // if the end idx of intervals[i] is less than the end index of last element in result
         // continue as the intervals[i] is already in the merged range
         // else
         // for all j = i+1 to n (all other values)
-        // evaluate if overlapping and then update the end index
+        // evaluate if the intervals overlap and then update the end index
         // add the new start and end to the result
 
         Arrays.sort(intervals, (a, b) -> Integer.compare(a[0], b[0]));
@@ -23,13 +23,13 @@ class Solution {
             int end = intervals[i][1];
 
             // already contained in the interval
-            // end <= last index in result
+            // current end idx <= end idx of last element in result
             if (!res.isEmpty() && end <= res.get(res.size() - 1)[1]) {
                 continue;
             }
 
             for (int j = i + 1; j < n; j++) {
-                // the maximum end index
+                // the merged interval will have the end index as max of both end and intervals[j][1]
                 if (intervals[j][0] <= end) {
                     end = Math.max(end, intervals[j][1]);
                 } else {
@@ -72,6 +72,7 @@ class Solution {
         for (int i = 0; i < n; i++) {
             int start = intervals[i][0];
             int end = intervals[i][1];
+            // start of intervals[i] is greater than the end index of last merged interval
             if (res.isEmpty() || start > res.get(res.size() - 1)[1]) {
                 res.add(intervals[i]);
             } else {
