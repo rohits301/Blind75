@@ -72,7 +72,7 @@ class Solution {
         for (int i = 0; i < n; i++) {
             int start = intervals[i][0];
             int end = intervals[i][1];
-            // start of intervals[i] is greater than the end index of last merged interval
+            // start of intervals[i] is greater than the end index of last merged interval -> cannot be merged, add separately
             if (res.isEmpty() || start > res.get(res.size() - 1)[1]) {
                 res.add(intervals[i]);
             } else {
