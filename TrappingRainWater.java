@@ -32,3 +32,38 @@ class Solution {
         return ans; 
     }
 }
+
+class Solution {
+    // BETTER
+    // refer STRIVER video and NEETCODE code
+    // pre-compute prefix sum (leftMax) and suffix sum (rightMax)
+    // this saves time by using O(2n) space
+    // T: O(n) - Three passes: one for leftMax, one for rightMax, and one for computing trapped water.
+    // S: O(n) - Two auxiliary arrays (leftMax, rightMax) of size n.
+    public int trap(int[] height) {
+        int n = height.length; 
+        int ans = 0; 
+        int[] leftMax = new int[n];  
+        int[] rightMax = new int[n]; 
+
+        // Compute the prefix max array (leftMax)
+        leftMax[0] = height[0];
+        for (int i = 1; i < n; i++) {
+            leftMax[i] = Math.max(leftMax[i - 1], height[i]);
+        }
+
+        // Compute the suffix max array (rightMax)
+        rightMax[n - 1] = height[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            rightMax[i] = Math.max(rightMax[i + 1], height[i]);
+        }
+
+        for (int i = 0; i < n; i++) {
+            // Water trapped at index i = min(leftMax[i], rightMax[i]) - height[i]
+            ans += Math.min(leftMax[i], rightMax[i]) - height[i];
+        }
+
+        return ans; 
+    }
+}
+
