@@ -1,70 +1,63 @@
 class Solution {
-    // Similar to course schedule - I
     // refer STRIVER
-    // BRUTE/BETTER/OPTIMAL
-    // T: O(V + E)
+    // Similar to Course Schedule I
+    // T: O(V + E) (V = numCourses, E = prerequisites.length)
     // S: O(V + E)
+    // NOTE: 
+    // the code automatically handles the case for empty prerequisites array
+    // in that case, the indegree of all nodes will be 0
+
     public int[] findOrder(int numCourses, int[][] prerequisites) {
         List<List<Integer>> adj = new ArrayList<>();
-        int V = numCourses; // no. of vertices
-        for (int i = 0; i < V; i++) {
+        int v = numCourses;
+
+        // Create adjacency list for each course (node)
+        for(int i = 0; i < v; i++) {
             adj.add(new ArrayList<>());
         }
 
-        int m = prerequisites.length; // no. of edges
-        for (int i = 0; i < m; i++) {
+        for(int i = 0; i < prerequisites.length; i++) {
             int ai = prerequisites[i][0];
             int bi = prerequisites[i][1];
-            adj.get(bi).add(ai);// directed edges
+            adj.get(bi).add(ai); // bi must be completed before ai
         }
 
-        // Kahn's algo - TOPO sort
-        // 1. create indegree[]
-        int[] indegree = new int[V];
-        for (int i = 0; i < V; i++) {
-            for (int nbr : adj.get(i)) {
-                indegree[nbr]++;
+        // Array to store in-degrees (number of prerequisites for each course)
+        int[] indegree = new int[v];
+        for(int i = 0; i < v; i++) {
+            for(int nbr: adj.get(i)) {
+                indegree[nbr]++; // Increment indegree for all neighbors
             }
         }
 
-        // 2. add elements with indegree == 0 to queue
-        Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < V; i++) {
-            if (indegree[i] == 0) {
-                q.add(i);
-            }
-        }
-
-        // 3. create a topo array for storing order of topo sort
-        int[] topo = new int[V];
+        // Array to store the topological order of courses
+        int[] topo = new int[v];
         int idx = 0;
-        while (!q.isEmpty()) {
-            // 4. remove from queue
-            // add to topo list
-            // decrement the indegree of nbrs
-            // if indegree of nbr == 0
-            // add them to queue
-            int val = q.poll();
-            topo[idx++] = val;
 
-            for (int nbr : adj.get(val)) {
-                indegree[nbr]--;
-                if (indegree[nbr] == 0) {
-                    q.add(nbr);
+        // Queue for BFS traversal to process courses with no prerequisites (indegree = 0)
+        Queue<Integer> q = new LinkedList<>();
+        for(int i = 0; i < v; i++) {
+            if(indegree[i] == 0) {
+                q.offer(i); // Add course to the queue if it has no prerequisites
+            }
+        }
+
+        // BFS to determine topological order
+        while(!q.isEmpty()) {
+            int val = q.poll();
+            topo[idx++] = val; // Add course to topological order
+
+            // Process all neighbors of the current course
+            for(int nbr: adj.get(val)) {
+                indegree[nbr]--; // Reduce indegree for each neighbor
+                if(indegree[nbr] == 0) {
+                    q.offer(nbr); // If indegree becomes 0, it can be processed
                 }
             }
         }
 
-        // in case of cycle, or invalid topo sort
-        // the indegree array is not empty, no items in queue
-        // so the idx != V
-        // Test Case: 
-        // prerequisites = [[0,1],[1,0]]
-        // numCourses = 2
-        if(idx == V){
-            return topo;
-        } else {
-            return new int[]{};
-        }
+        // If we have processed all courses (idx == v), return the topological order
+        // If there's a cycle (not all courses were processed), return an empty array
+        return (idx == v) ? topo : new int[]{};
     }
 }
