@@ -90,13 +90,15 @@ class Solution {
      *   - Update `leftMax` to ensure it can serve as a boundary for future buildings.
      * - Else (`height[left] < leftMax`) → Water can be trapped.  
      *   - Water trapped at `left = leftMax - height[left]`.
-     *
+     * IMP. - 
+     * The ans = leftMax - height[left] works because we have crossed the values at left and all those values are <= height[right], hence
+     * the leftMax is always <= height[right]
      * Similarly, for `right`:  
      * - We only enter the right case when `height[right] < height[left]`,  
      *   meaning the left boundary is **strong enough** to trap water.  
      * - We then check whether `rightMax` is high enough to trap water on the right side.
      */
-
+    
     // T: O(n);
     // S: O(1);
     public int trap(int[] height) {
