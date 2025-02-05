@@ -67,3 +67,63 @@ class Solution {
     }
 }
 
+class Solution {
+    // OPTIMAL
+    // TWO-POINTER
+    // refer STRIVER video
+    // INTUITION
+    /** 
+     * Instead of precomputing prefix (`leftMax[]`) and suffix (`rightMax[]`) arrays,  
+     * we calculate them dynamically to save space.  
+     *
+     * To determine the trapped water at each index, we use:
+     *     min(leftMax, rightMax) - height[i]
+     *
+     * **Key Idea:**  
+     * - If we only have one boundary available at any step, it must be the **minimum** one.
+     * - If `height[left] <= height[right]`, we are sure that the left height is smaller,  
+     *   and there exists some height on the right that is **equal or greater** than `height[left]`.  
+     *   This guarantees that water can be trapped from the **right end**.
+     *
+     * **Logic Breakdown:**  
+     * - If `height[left] >= leftMax` → No water is trapped at `left` (since there’s no left boundary).  
+     *   - Update `leftMax` to ensure it can serve as a boundary for future buildings.
+     * - Else (`height[left] < leftMax`) → Water can be trapped.  
+     *   - Water trapped at `left = leftMax - height[left]`.
+     *
+     * Similarly, for `right`:  
+     * - We only enter the right case when `height[right] < height[left]`,  
+     *   meaning the left boundary is **strong enough** to trap water.  
+     * - We then check whether `rightMax` is high enough to trap water on the right side.
+     */
+
+    // T: O(n);
+    // S: O(1);
+    public int trap(int[] height) {
+        int n = height.length; 
+        int ans = 0; 
+        int leftMax = 0, rightMax = 0;
+        int left = 0, right = n-1; 
+
+        while(left <= right) {
+
+            if(height[left] <= height[right]){
+                if(height[left] >= leftMax){
+                    leftMax = height[left];
+                } else {
+                    ans += leftMax - height[left];
+                }
+                left++;
+            } else {
+                if(height[right] >= rightMax){
+                    rightMax = height[right];
+                } else {
+                    ans += rightMax - height[right];
+                }
+                right--;
+            }
+        }
+
+        return ans; 
+    }
+}
