@@ -1,63 +1,83 @@
 class Solution {
-    // refer STRIVER
-    // T: O(V+E); numCourses + prerequistes.length
-    // S: O(V+E) + O(V); adjacency list + topo list
-    public boolean canFinish(int numCourses, int[][] prerequisites) {
-        // 2 approaches are possible
-        // 1. DFS for detecting cycle
-        // 2. BFS for topo sort (if topo sort is possible, then true, else false)
+    // refer STRIVER and ChatGPT
+    // T: O(V+E)
+    // S: O(V+E)
+    // BFS Kahn's Algo.
+    // We take edge from bi to ai, because bi must be completed before ai
+    // For e.g. -> numCourses = 4
+    // prerequisites = [[1,0],[2,0],[3,1],[3,2]]
+    // adjacency list ->
+    /*
+     * 0 -> 1,2 (0 must complete before 1,2)
+     * 1 -> 3
+     * 2 -> 3
+     * 3 -> []
+     * So, indegree[0] = 0, as no incoming edge to 0
+     * indegree[1] = 1
+     * indegree[2] = 1
+     * indegree[3] = 2
+     * Since indegree for 0 is 0, so it can be processed first
+     * hence, we take this course before its neighbors
+     * With topological sort, we get the order of taking these courses
+     * -> 0,1,2,3
+     */
 
+    // THIS CAN BE USED FOR CYCLE-DETECTION IN Directed Graph
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        // If there are no prerequisites, all courses can be completed
+        if (prerequisites.length == 0) {
+            return true;
+        }
+
+        // Step 1: Build the graph (adjacency list) and compute indegrees
         List<List<Integer>> adj = new ArrayList<>();
-        int V = numCourses; // no. of vertices
-        for (int i = 0; i < V; i++) {
+        int v = numCourses;
+        for (int i = 0; i < v; i++) {
             adj.add(new ArrayList<>());
         }
 
-        int m = prerequisites.length; // no. of edges
-        for (int i = 0; i < m; i++) {
-            int ai = prerequisites[i][0];
-            int bi = prerequisites[i][1];
-            adj.get(bi).add(ai); // directed edges
+        // Build the graph based on prerequisites
+        for (int i = 0; i < prerequisites.length; i++) {
+            int ai = prerequisites[i][0];  // course to be taken
+            int bi = prerequisites[i][1];  // course to complete before ai
+            adj.get(bi).add(ai); // bi must be completed before ai, so we add the edge bi -> ai
         }
 
-        // Kahn's algo - TOPO sort
-        // 1. create indegree[]
-        // number of incoming edges is indegree
-        int[] indegree = new int[V];
-        for (int i = 0; i < V; i++) {
+        // Step 2: Initialize indegree array (number of prerequisites for each course)
+        int[] indegree = new int[v];
+        for (int i = 0; i < v; i++) {
             for (int nbr : adj.get(i)) {
-                indegree[nbr]++;
+                indegree[nbr]++; // Each neighbor (course) gets one additional prerequisite
             }
         }
 
-        // 2. add elements with indegree == 0 to queue
+        // Step 3: Initialize the queue with all courses that have no prerequisites (indegree = 0)
         Queue<Integer> q = new LinkedList<>();
-        for (int i = 0; i < V; i++) {
+        for (int i = 0; i < v; i++) {
             if (indegree[i] == 0) {
-                q.add(i);
+                q.offer(i);  // Add course to queue if it has no prerequisites
             }
         }
 
-        // 3. create a topo list for storing order of topo sort
-        List<Integer> topo = new ArrayList<>();
+        // Step 4: Process courses and update indegree for dependent courses
+        int count = 0; // To keep track of the number of courses processed
         while (!q.isEmpty()) {
-            // 4. remove from queue
-            // add to topo list
-            // decrement the indegree of nbrs
-            // if indegree of nbr == 0
-            // add them to queue
-            int val = q.poll();
-            topo.add(val);
+            int val = q.poll();  // Process course
+            count++;  // Increment count of completed courses
 
+            // Process each course that depends on the current course
             for (int nbr : adj.get(val)) {
-                indegree[nbr]--;
+                indegree[nbr]--; // Reduce indegree as we process the current course
                 if (indegree[nbr] == 0) {
-                    q.add(nbr);
+                    q.offer(nbr);  // Add the course to queue if it can now be processed (indegree = 0)
                 }
             }
         }
 
-        // if the order is valid, then topo.size() = V
-        return (topo.size() == V) ? true : false; 
+        // Step 5: If all courses are processed, return true, else return false (cycle detected)
+        // If count equals numCourses, all courses can be finished.
+        // If a cycle exists, some courses will always have indegree > 0,
+        // preventing them from being added to the queue.
+        return (count == v); 
     }
 }
