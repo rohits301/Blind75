@@ -2,36 +2,37 @@
  * Premium problem, hence, not submitted anywhere
  */
 // From LintCode, T: O(n), S: O(n) - n = total number of characters in all strings combined in strs
-public class Solution {
-    /*
-     * @param strs: a list of strings
-     * @return: encodes a list of strings to a single string.
-     */
+class Solution {
+
     public String encode(List<String> strs) {
-        // write your code here
-        StringBuilder encoded = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
+
         for(String str: strs){
-            encoded.append(str.length()).append("#").append(str);
+            sb.append(str.length()).append("#").append(str);
         }
-        return encoded.toString();
+        return sb.toString();
     }
 
-    /*
-     * @param str: A string
-     * @return: decodes a single string to a list of strings
-     */
+    // "i" is always on the number
+    // "j" is on "#"
+    // and "j+1" on first character of string
     public List<String> decode(String str) {
-        // write your code here
-        int i=0;
-        List<String> ans = new ArrayList<>();
-        while(i < str.length()){
-            int j=i;
-            while(str.charAt(j) != '#') j++;
+        List<String> strs = new ArrayList<>();
+        int i = 0, j = 0;
 
-            int len = Integer.valueOf(str.substring(i, j));
-            i = j+1+len;
-            ans.add(str.substring(j+1, i));
+        while(j < str.length()){
+            while(str.charAt(j) != '#'){
+                j++;
+            }
+
+            // now str.charAt(j) = '#'
+            int len = Integer.parseInt(str.substring(i, j));
+            i = j + 1 + len;
+            strs.add(str.substring(j + 1, i));
+
+            // setup for next iteration
+            j = i;
         }
-        return ans;
+        return strs;
     }
 }
