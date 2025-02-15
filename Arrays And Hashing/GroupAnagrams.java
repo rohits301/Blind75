@@ -1,6 +1,6 @@
 class Solution {
-    // T: O(m * nlogn) m = strs.length, n = max length of strs[i] 
-    // S : O(m)
+    // T: O(m * nlogn), n = strs.length, m = avg. length of strs[i] 
+    // S : O(m * n)
     public List<List<String>> groupAnagrams(String[] strs) {
         
         HashMap<String, List<String>> map = new HashMap<>();
@@ -21,28 +21,24 @@ class Solution {
 
 class Solution {
     // OPTIMAL
-    // T: O(m * n * 26), m = strs.length, n = max length of strs[i] 
-    // S : O(m)
+    // T: O(n * m), n = strs.length, m = avg. length of strs[i] 
+    // S : O(n * m), since all strings are stored in map, so `n` string of `m` length 
     public List<List<String>> groupAnagrams(String[] strs) {
-        if(strs == null || strs.length == 0) return Collections.emptyList();
+        if(strs == null || strs.length == 0){
+            return Collections.emptyList();
+        }
         Map<String, List<String>> map = new HashMap<>();
-        for(String s: strs){
-            //char type 0~127 is enough for constraint 0 <= strs[i].length <= 100
-            //char array to String is really fast, thanks @legendaryengineer
-            //You should use other data type when length of string is longer.
-            //E.g. Use byte (-128 to 127), short (-32,768 to 32,767),
-            //int. -2,147,483,648 to 2,147,483,647
+        
+        for(String str: strs){
             char[] frequencyArr = new char[26];
-            for(int i = 0;i<s.length();i++){
-                frequencyArr[s.charAt(i) - 'a']++;
+            for(int i = 0; i < str.length(); i++){
+                frequencyArr[str.charAt(i) - 'a']++;
             }
-            //6 ms use char(0~127) array and new String(frequencyArr) method.
-            //17ms when use byte (-128 to 127) array and Arrays.toString(frequencyArr) method
-            //29ms when use int(-2,147,483,648 to 2,147,483,647) and Arrays.toString(frequencyArr) method
-            String key = new String(frequencyArr);
+            
+            String key = new String(frequencyArr); // cannot use .toString() because char[].toString() calls Object.toString(), which returns a memory address-like format ([C@hashcode])
             List<String> tempList = map.getOrDefault(key, new ArrayList<String>());
-            tempList.add(s);
-            map.put(key,tempList);
+            tempList.add(str);
+            map.put(key, tempList);
         }
         return new ArrayList<>(map.values());
     }
