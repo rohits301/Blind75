@@ -90,6 +90,14 @@ class Solution {
      * - Min Heap stores k elements → O(k).  
      * - Output array stores k elements → O(k).  
      * - Overall Complexity → O(n + k).  
+     * 
+     * offer(E e) vs add(E e)
+     * - Use offer() as it doesn't throw an exception and instead returns false when the queue is full.
+     * - add() throws an IllegalStateException if the queue has a capacity limit and is full.
+     *
+     * poll() vs remove()
+     * - Use poll() as it doesn't throw an exception when the queue is empty. It returns null instead.
+     * - remove() throws a NoSuchElementException if the queue is empty.
      */
 
     public int[] topKFrequent(int[] nums, int k) {
