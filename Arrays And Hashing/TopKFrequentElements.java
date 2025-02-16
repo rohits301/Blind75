@@ -10,12 +10,13 @@ class Solution {
         int[] ans = new int[k];
 
         for (int i = 0; i < k; i++) {
-            int maxVal = 0;
-            int maxKey = 0;
-            for (int key : map.keySet()) {
-                if (map.get(key) > maxVal) {
-                    maxVal = map.get(key);
-                    maxKey = key;
+            int maxVal = -1;
+            int maxKey = -1;
+            
+            for(Map.Entry<Integer, Integer> entry: map.entrySet()){
+                if(entry.getValue() > maxVal){
+                    maxVal = entry.getValue();
+                    maxKey = entry.getKey();
                 }
             }
             ans[i] = maxKey;
@@ -26,7 +27,33 @@ class Solution {
 }
 
 class Solution {
+    // BETTER
+    // T: O(n logn), S: O(n)
+    public int[] topKFrequent(int[] nums, int k) {
+        int[] ans = new int[k];
+
+        Map<Integer, Integer> map = new HashMap<>();
+        for (int num : nums) {
+            map.put(num, map.getOrDefault(num, 0) + 1);
+        }
+
+        // Convert map to list of entries
+        List<Map.Entry<Integer, Integer>> entryList = new ArrayList<>(map.entrySet());
+
+        // Sort entries based on frequency in descending order
+        entryList.sort((e1, e2) -> e2.getValue().compareTo(e1.getValue()));
+
+        for (int i = 0; i < k; i++) {
+            ans[i] = entryList.get(i).getKey();
+        }
+
+        return ans;
+    }
+}
+
+class Solution {
     // refer Aditya Verma
+    // BETTER
     // T: O(nlogk), S: O(n+k)
     /**
      * Approach: Min Heap (Priority Queue)
@@ -95,6 +122,7 @@ class Solution {
 }
 
 class Solution {
+    // OPTIMAL
     // REFER NEETCODE
     // T: O(n), S: O(n)
     // Bucket Sort
