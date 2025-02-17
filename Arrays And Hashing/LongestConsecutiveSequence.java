@@ -1,4 +1,5 @@
 class Solution {
+    // refer STRIVER's Video - all approaches
     // BRUTE FORCE
     // T: O(n^3), S: O(1) 
     // TLE
@@ -41,7 +42,8 @@ class Solution {
 
         for (int i = 0; i < n; i++) {
             // always update last smaller in case of sequence or no sequence
-            // in case when nums[i] == lastSmaller, then, it is duplicate element and we do nothing and go to next iteration
+            // in case when nums[i] == lastSmaller, then, start a new sequence
+            // nums[i] == nums[i-1], then, it is duplicate element and we do nothing and go to next iteration
             if (nums[i] - 1 == lastSmaller) {
                 count += 1;
                 lastSmaller = nums[i];
@@ -59,7 +61,6 @@ class Solution {
 
 class Solution {
     // OPTIMAL
-    // refer STRIVER's Video
     // Optimal - O(n) time and space both
     // the iteration in inner while is max. n so O(n+n+n = n) time
     public int longestConsecutive(int[] nums) {
