@@ -1,7 +1,7 @@
 class Solution {
-    // refer STRIVER's VIDEO
+    // refer STRIVER video solution for Brute, Better and Optimal
     // BRUTE FORCE
-    // T: O(n^3), S: O(no. of unique triplets)
+    // T: O(n^3), S: O(2 * no. of unique triplets) - space of set + answer list
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         Set<List<Integer>> set = new HashSet();
@@ -32,7 +32,7 @@ class Solution {
     // BETTER
     // T: O(n^2) 
     // S: O(n + no. of unique ele * 2); n=for hashset, no. of unique ele - first is for set, second is for the ans list
-    // using set, an external DS to store the answer 
+    // using set, an external Data structure to store the answer 
     public List<List<Integer>> threeSum(int[] nums) {
         int n = nums.length;
         Set<List<Integer>> set = new HashSet<>();
@@ -58,12 +58,17 @@ class Solution {
 class Solution {
     // OPTIMAL
     // T: O(n^2 + nlogn), S: O(no. of triplets) 
-    // STRIVER video solution for Brute, Better and Optimal
+    /*
+    We required extra space of set to sort the triplet. If we want to get rid of sorting the triplets, we can sort the entire array in the beginning itself.
+    Then, we can use two-pointer such that, i < j < k
+    Fix `i`, move `j` and `k`.
+    We skip duplicates, whenever we find a triplet for given `j` and `k`.
+    */
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> ans = new ArrayList<>();
         int n = nums.length;
 
-        // 1. Sort the array
+        // 1. Sort the array 
         Arrays.sort(nums);
         for (int i = 0; i < n; i++) {
             // to avoid duplicate i
@@ -74,7 +79,7 @@ class Solution {
             // for a given i, find j and k such that all sum to zero
             int j = i + 1, k = n - 1;
             while (j < k) {
-                int sum = nums[i]+nums[j]+nums[k];
+                int sum = nums[i] + nums[j] + nums[k];
                 if(sum < 0){
                     j++;
                 } else if(sum >0){
@@ -82,15 +87,19 @@ class Solution {
                 } else {
                     // sum == 0, found the triplet
                     List<Integer> list = new ArrayList<>();
-                    Collections.addAll(list, nums[i],nums[j],nums[k]);
+                    Collections.addAll(list, nums[i], nums[j], nums[k]);
                     ans.add(list);
                     j++;
                     k--;
 
                     // to avoid duplicate j and duplicate k
-                    while(j<k && nums[j] == nums[j-1]) j++;
+                    while(j < k && nums[j] == nums[j-1]) {
+                        j++;
+                    }
                     // for k, the previous element is k+1
-                    while(j<k && nums[k] == nums[k+1]) k--;
+                    while(j < k && nums[k] == nums[k+1]) {
+                        k--;
+                    }
                 }
             }
         }
