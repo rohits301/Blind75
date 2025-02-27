@@ -121,7 +121,7 @@ class Solution {
         // when text1[i] == text2[j] -> dp[i-1][j-1] has the ans.
         // when text1[i] != text2[j] -> max(dp[i-1][j], dp[i][j-1]) has the ans.
         // so we need track of only dp[i-1] i.e. previous row
-        // row.size() = m in our case
+        // number of columns = m in our case
         // current row -> curr[], previous row -> prev[]
         
         // base case, the previous row is 0 (similar to -ve indices)
