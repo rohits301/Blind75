@@ -12,10 +12,11 @@ class Solution {
         int left = 0, right = n - 1;
         List<Integer> ans = new ArrayList<>();
 
-        // extra if-checks for single row matrix
-        // in that case, top = bottom
+        // extra if-checks for single row & single column matrix
+        // single row case, top = bottom
         // so matrix[bottom][i] is repitition
         // similarly, for single column, left = right
+        // so matrix[i][left] is repitition
 
         while (top <= bottom && left <= right) {
             for (int i = left; i <= right; i++) {
