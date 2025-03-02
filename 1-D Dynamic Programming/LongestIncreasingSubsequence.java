@@ -159,3 +159,52 @@ class Solution {
     }
 
 }
+
+class Solution {
+    // refer STRIVER
+    // T: O(n log n) - due to binary search in lowerBound
+    // S: O(n) - for the temp list storing LIS sequence
+    // the LIS sequence stored is just a sorted sequence, it is not the correct LIS sequence
+    public int lengthOfLIS(int[] nums) {
+        // List to store the smallest possible end elements of increasing subsequences
+        List<Integer> temp = new ArrayList<>();
+        temp.add(nums[0]);  // Initialize with the first element
+        int count = 1;
+
+        for (int i = 1; i < nums.length; i++) {
+            if (nums[i] > temp.get(temp.size() - 1)) {
+                // If nums[i] extends the LIS, append it to temp
+                temp.add(nums[i]);
+                count++;
+            } else {
+                // If nums[i] can replace an element in temp
+                // Find the first index where temp[idx] >= nums[i] (lower bound)
+                int lb = lowerBound(temp, nums[i]);
+                temp.set(lb, nums[i]);  // Replace it to maintain the smallest possible LIS
+            }
+        }
+        return count; // Length of temp is the length of LIS
+    }
+
+    /**
+     * Finds the index of the first element in arr that is >= x
+     * This is essentially the "lower bound" function using binary search.
+     * If no such element exists, it returns the index where x can be placed.
+     */
+    private int lowerBound(List<Integer> arr, int x) {
+        int lo = 0, hi = arr.size() - 1;
+        int ans = arr.size(); // Default to size if x is larger than all elements
+
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+
+            if (arr.get(mid) >= x) {
+                ans = mid;  // Possible position for x
+                hi = mid - 1; // Search in the left half
+            } else {
+                lo = mid + 1; // Search in the right half
+            }
+        }
+        return ans;
+    }
+}
