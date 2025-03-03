@@ -31,7 +31,7 @@
                 lastEndTime = intervals.get(i).end;
             }
         }
-        return (n == count); // if the maximum meetings == total meetings, then true    }
+        return (n == count); // if the maximum meetings == total meetings, then true
     }
 
 }
