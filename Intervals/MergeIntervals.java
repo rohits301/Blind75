@@ -79,6 +79,7 @@ class Solution {
                 res.add(intervals[i]);
             } else {
                 // Overlapping interval, so merge by updating the end
+                // update only end as start is already updated, because sorted on start times
                 int lastEnd = res.get(res.size() - 1)[1];
                 res.get(res.size() - 1)[1] = Math.max(lastEnd, end);
             }
