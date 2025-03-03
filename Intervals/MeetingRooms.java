@@ -35,3 +35,36 @@
     }
 
 }
+
+class Solution {
+   /**
+   * Given a list of meeting time intervals, determine if a person can attend all meetings.
+   * 
+   * Steps:
+   * 1. Sort the intervals by their **start time**.
+   * 2. Iterate through the sorted list and check if any meeting **overlaps** with the previous one.
+   * 3. If an overlap is found (`start time of current < end time of previous`), return `false`.
+   * 4. Otherwise, return `true` (no overlaps).
+   *
+   * Time Complexity: O(n log n) -> Sorting dominates
+   * Space Complexity: O(1) -> No extra space used
+   * OPTIMAL
+   */
+    public boolean canAttendMeetings(List<Interval> intervals) {
+        if (intervals.isEmpty()) {
+            return true;
+        }
+
+        // Sort intervals by start time
+        intervals.sort((a, b) -> Integer.compare(a.start, b.start));
+
+        // Check for overlapping meetings
+        for (int i = 1; i < intervals.size(); i++) {
+            if (intervals.get(i).start < intervals.get(i - 1).end) {
+                return false; // Overlapping meeting found
+            }
+        }
+
+        return true; // No overlaps
+    }
+}
