@@ -59,7 +59,10 @@ class Solution {
     // OPTIMAL
     // T: O(n^2 + nlogn), S: O(no. of triplets) 
     /*
-    We required extra space of set to sort the triplet. If we want to get rid of sorting the triplets, we can sort the entire array in the beginning itself.
+    We required extra space of set to sort the triplet. 
+    Sorting will change order, but that won't affect the answer
+    it ensures, we always have the sorted order when we find a triplet
+    Hence, to get rid of sorting the triplets, we can sort the entire array in the beginning itself.
     Then, we can use two-pointer such that, i < j < k
     Fix `i`, move `j` and `k`.
     We skip duplicates, whenever we find a triplet for given `j` and `k`.
