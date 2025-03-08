@@ -1,59 +1,68 @@
-// refer NEETCODE
+/*
+* Refer NEETCODE
+* Time Complexity:
+* - addWord(word) -> O(N), where N is the length of the word.
+* - search(word) -> O(26^M) in the worst case (when word consists entirely of '.' wildcards).
+*
+* Space Complexity: O(N) for storing words in the Trie.
+*/
 class WordDictionary {
+
+    // private static - restricts direct access, enforces encapuslation
+    // Eliminates unnecessary outer class references (store in case of non-static
+    // members), improving memory efficiency
     private static class TrieNode {
         TrieNode[] children;
-        boolean isEndOfWord;
+        boolean isEnd;
 
         public TrieNode() {
             children = new TrieNode[26];
-            isEndOfWord = false;
+            isEnd = false;
         }
     }
 
-    private static TrieNode root;
+    private TrieNode root;
 
     public WordDictionary() {
         root = new TrieNode();
     }
 
-    // tc: O(n), sc: O(n)
     public void addWord(String word) {
-        TrieNode curr = root;
-        for (char ch : word.toCharArray()) {
-            if (curr.children[ch - 'a'] == null) {
-                curr.children[ch - 'a'] = new TrieNode();
-            }
-            curr = curr.children[ch - 'a'];
-        }
-        curr.isEndOfWord = true;
-    }
-
-    // tc: O(m^2) where m = no. of characters at each level, sc: O(1)
-    public boolean search(String word) {
-        return searchHelper(word, root, 0);
-    }
-
-    private boolean searchHelper(String word, TrieNode curr, int idx) {
-        for (int i = idx; i < word.length(); i++) {
+        // insert in trie
+        TrieNode node = root;
+        for (int i = 0; i < word.length(); i++) {
             char ch = word.charAt(i);
+            if (node.children[ch - 'a'] == null) {
+                node.children[ch - 'a'] = new TrieNode();
+            }
+            node = node.children[ch - 'a'];
+        }
+        node.isEnd = true;
+    }
 
-            if (ch == '.') {
-                // explore all paths, so dfs
-                for (TrieNode child : curr.children) {
-                    if (child != null && searchHelper(word, child, i + 1)) {
-                        return true;
-                    }
-                }
-                return false;
-            } else {
-                if (curr.children[ch - 'a'] == null) {
-                    return false;
-                } else {
-                    curr = curr.children[ch - 'a']; // move to next
+    public boolean search(String word) {
+        return dfsSearch(word, 0, root);
+    }
+
+    private boolean dfsSearch(String word, int i, TrieNode node) {
+        // base case
+        if (i == word.length()) {
+            return node.isEnd; // If at the end of the word, check if it's a valid word
+        }
+
+        char ch = word.charAt(i);
+        if (ch == '.') {
+            // Check all possible children
+            for (TrieNode child : node.children) {
+                if (child != null && dfsSearch(word, i + 1, child)) {
+                    return true; // If any path returns true, the word exists
                 }
             }
+            return false; // No matching path found
+        } else {
+            // normal search in trie
+            return (node.children[ch - 'a'] != null && dfsSearch(word, i + 1, node.children[ch - 'a']));
         }
-        return curr.isEndOfWord;
     }
 }
 
