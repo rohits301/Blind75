@@ -1,72 +1,58 @@
-public class TrieNode {
-    // Array to store references to child nodes (26 for lowercase English letters)
-    private TrieNode[] children;
-    // Flag to mark if a node represents the end of a word
-    private boolean isEndOfWord;
-
-    public TrieNode(){
-        children = new TrieNode[26]; // Initializes an array for children nodes
-        isEndOfWord = false; // By default, a node is not the end of a word
-    }
-
-    // Getter method to retrieve children nodes
-    public TrieNode[] getChildren() {
-        return children;
-    }
-    
-    // Getter method to check if this node marks the end of a word
-    public boolean getEndOfWord(){
-        return isEndOfWord;
-    }
-    
-    // Setter method to create a link between this node and a child node
-    public void setChildren(char ch, TrieNode node) {
-        children[ch - 'a'] = node; // Maps character to its corresponding child node
-    }
-    
-    // Marks the current node as the end of a word
-    public void setEndOfWord(){
-        this.isEndOfWord = true;
-    }
-}
-
-// refer STRIVER for understanding, code from ChatGPT
+// refer STRIVER for understanding and NEETCODE for code
 class Trie {
+    /**
+     * The TrieNode class represents individual nodes in the Trie.
+     * 
+     * Why `private static`?
+     * ✅ `private` - Ensures encapsulation; the TrieNode is only accessible within Trie.
+     * ✅ `static`  - Ensures each TrieNode instance does NOT store an implicit reference to the outer Trie class.
+     *                - Without `static`, each TrieNode would hold a reference to the parent Trie, wasting memory.
+     *                - This allows efficient memory usage when creating multiple TrieNodes.
+     */
+    private static class TrieNode {
+        // Array to store references to child nodes (26 for lowercase English letters)
+        TrieNode[] children; //default-access, package-private
+        boolean isEndOfWord;
+    
+        public TrieNode(){
+            children = new TrieNode[26]; // Initializes an array for children nodes
+            isEndOfWord = false; // By default, a node is not the end of a word
+        }
+    }
+    
     private TrieNode root; // Root node of the Trie
 
     public Trie() {
         root = new TrieNode(); // Initializes Trie with an empty root node
     }
 
-    // T: O(n), S: O(n) - to store the word
-    // Inserts a word into the Trie
+    // T: O(n), S: O(n) - worst case, we insert a new word
     public void insert(String word) {
         TrieNode node = root;
         for (char ch : word.toCharArray()) {
             // If there is no child node for the current character, create one
-            if (node.getChildren()[ch - 'a'] == null) {
-                node.setChildren(ch, new TrieNode());
+            if (node.children[ch - 'a'] == null) {
+                node.children[ch-'a'] = new TrieNode();
             }
             // Move to the next node
-            node = node.getChildren()[ch - 'a']; 
+            node = node.children[ch - 'a']; 
         }
-        node.setEndOfWord(); // Marks the last node as the end of the word
+        node.isEndOfWord = true; // Marks the last node as the end of the word
     }
 
     // T: O(n), S: O(1)
-    // Searches for a word in the Trie
     public boolean search(String word) {
         TrieNode node = root;
         for (char ch : word.toCharArray()) {
             // If the character node doesn't exist, word is not present
-            if (node.getChildren()[ch - 'a'] == null) {
+            if (node.children[ch - 'a'] == null) {
                 return false;
             } 
             // Move to the next node
-            node = node.getChildren()[ch - 'a'];
+            node = node.children[ch - 'a'];
         }
         // Return true only if this node marks the end of a word
-        return node.getEndOfWord();
+        return node.isEndOfWord;
     }
 
     // T: O(n), S: O(1)
@@ -75,11 +61,11 @@ class Trie {
         TrieNode node = root;
         for (char ch : prefix.toCharArray()) {
             // If the character node doesn't exist, prefix is not present
-            if (node.getChildren()[ch - 'a'] == null) {
+            if (node.children[ch - 'a'] == null) {
                 return false;
             }
             // Move to the next node
-            node = node.getChildren()[ch - 'a'];
+            node = node.children[ch - 'a'];
         }
         return true; // If we reached here, prefix exists in the Trie
     }
