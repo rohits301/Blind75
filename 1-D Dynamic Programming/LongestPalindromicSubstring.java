@@ -85,6 +85,17 @@ class Solution {
     // Better (DP - Tabulation) 
     // T: O(n^2); time to fill the n^2 dp 
     // S: O(n^2); space of dp array
+    /*
+     * In the dp array, on both sides of the array, denoted by `i` and `j`, imagine the string is there
+     * The susbtring under consideration is `i` to `j`. Starting at `i` and ending at `j`.
+     * `i` to `i`, that is 1 length substring is always a palindrome
+     * `i` to `i+1` - 2 length substring, palindrome if `charAt(i) == charAt(j)`
+     * For substrings of length 3 or more (`s[i:j]`), check if:
+     * The first and last characters are equal (`s[i] == s[j]`).
+     * The inner substring `s[i+1:j-1]` is already marked as a palindrome in `dp`
+     * 
+     * Note: the longest substring is mapped to dp[0][n-1].
+     */
     public String longestPalindrome(String s) {
         int[] ans = new int[2];
         int n = s.length();
@@ -104,7 +115,7 @@ class Solution {
                 ans[1] = i + 1;
             }
         }
-        // 3 and more - length substrings
+        // 3 and more length substrings
         for (int diff = 2; diff < n; diff++) {
             for (int i = 0; i < n - diff; i++) {
                 int j = i + diff;
