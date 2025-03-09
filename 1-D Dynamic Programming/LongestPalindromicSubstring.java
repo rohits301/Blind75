@@ -26,6 +26,9 @@ class Solution {
     }
 
     private boolean solve(String s, int i, int j, int[][] dp) {
+        // i == j, single character case, odd-length susbtring
+        // i > j, empty string case, even-length substring
+        // both are palindrome, so return true
         if (i >= j) {
             return true;
         }
