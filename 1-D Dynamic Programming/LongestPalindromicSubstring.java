@@ -133,15 +133,31 @@ class Solution {
 }
 
 class Solution {
+    // OPTIMAL
     // refer Java brains
     // T: O(n^2), S: O(n)
-    // The check when start from middle and expand, we are able to check all possible substrings and it saves us an entire loop of first finding the substrings and then checking whether they are palindrome
+   /*
+     * The "Expand Around Center" approach is based on the idea that for a substring to be palindromic, 
+     * the characters at its two ends must be equal, and the substring between them must also be a palindrome.
+     *
+     * Instead of checking all possible substrings separately (O(n^3) brute force), we expand outward 
+     * from a center and check if it remains a palindrome. This saves extra loops.
+     *
+     * Since a palindrome can be:
+     *  - Odd-length: The center is a single character (e.g., "aba" → center at 'b')
+     *  - Even-length: The center is between two characters (e.g., "abba" → center between 'bb')
+     *
+     * To account for both cases, we check **two centers for every character**:
+     *  1. `expandAroundCenter(s, start, start, ans)`  → Odd-length palindromes
+     *  2. `expandAroundCenter(s, start, start + 1, ans)` → Even-length palindromes
+     */
     public String longestPalindrome(String s) {
         if (s.length() < 2) {
             return s;
         }
 
-        int[] ans = new int[2];
+        int[] ans = new int[2]; // Stores the starting index and length of the longest palindrome found.
+        // Iterate through each character as a potential center
         for (int start = 0; start < s.length() - 1; start++) {
             expandAroundCenter(s, start, start, ans); // odd length palindromes
             expandAroundCenter(s, start, start + 1, ans); // even length palindromes
@@ -157,9 +173,16 @@ class Solution {
             begin--;
             end++;
         }
-        if (ans[1] < (end - begin - 1)) {
+        
+        // When expansion stops, the actual palindrome length is (end - begin - 1)
+        // Example: "aba", after expansion stops: begin = -1, end = 3, length = 3 - (-1) - 1 = 3
+        int length = end - begin - 1;
+        if (length > ans[1]) {
             ans[0] = begin + 1;
-            ans[1] = end - begin - 1;
+            ans[1] = length;
         }
     }
 }
+
+// OPTIMAL - MAX
+// MANACHER'S ALGO.
