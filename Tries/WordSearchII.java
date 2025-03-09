@@ -56,6 +56,7 @@ class Solution {
 
         public TrieNode() {
             children = new TrieNode[26];
+            // word = null; // not required as this is default for String
         }
     }
 
@@ -63,14 +64,14 @@ class Solution {
         TrieNode root = new TrieNode();
 
         for (String word : words) {
-            TrieNode curr = root;
+            TrieNode node = root;
             for (char ch : word.toCharArray()) {
-                if (curr.children[ch - 'a'] == null) {
-                    curr.children[ch - 'a'] = new TrieNode();
+                if (node.children[ch - 'a'] == null) {
+                    node.children[ch - 'a'] = new TrieNode();
                 }
-                curr = curr.children[ch - 'a'];
+                node = node.children[ch - 'a'];
             }
-            curr.word = word;
+            node.word = word;
         }
         return root;
     }
@@ -81,7 +82,7 @@ class Solution {
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[0].length; j++) {
-                dfs(i, j, boardroot, res);
+                dfs(i, j, board, root, res);
             }
         }
         return res;
