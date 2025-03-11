@@ -2,7 +2,7 @@ class Solution {
     // refer NEETCODE
     // BRUTE/BETTER
     // T: O(n^2) - O(81)
-    // S: O(n) - O(9)
+    // S: O(n) - O(9) for each set we have max 9 elements in it
     public boolean isValidSudoku(char[][] board) {
         int n = board.length; // n = 9
         Set<Character> set;
@@ -89,3 +89,63 @@ class Solution {
     }
 }
 
+class Solution {
+    // refer NEETCODE
+    // OPTIMAL
+    // using bit-masking
+    // T: O(n^2) - O(81)
+    // S: O(n) - O(9*3)
+    /*
+     * Approach - 
+     * Previously, we were checking every row, col and square for duplicate.
+     * The duplicate search can be done with bits because
+     * `int` has 32 bits and we only need 9.
+     * To represent numbers, we can create a mask that left shifts 1
+     * in-order to turn on that particular bit.
+     * For e.g. board[i][j] = '5', and i=1, j=5
+     * val = '5'-'1' = 4
+     * turn the 4th bit on => 00010000
+     * mark the location in row -> 
+     * rows[1] = 00010000 and cols[5] = 00010000
+     * this means for 1st row, 5th column, we have 4th bit on.
+     * since all loops run 9*9 times, so we run a single loop and do every marking there only.
+     * To find square index - 
+     * observe the pattern for indexes of row, col in 2D matrix
+     * i/3 and j/3 both result in 0-2.
+     * In the squares, to get the row index we need to multiply by 3. 
+     * Column is the offset from that location.
+     * hence, squareIdx = (i/3)*3 + j/3;
+     */
+    public boolean isValidSudoku(char[][] board) {
+        int[] rows = new int[9];
+        int[] cols = new int[9];
+        int[] squares = new int[9];
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (board[i][j] == '.') {
+                    continue;
+                }
+
+                int val = board[i][j] - '1'; // '1'-'9' is mapped to 0-8
+                int bit = (1 << val); // set the bit
+                int squareIdx = (i / 3) * 3 + j / 3;
+
+                // check whether it is already there (seen)
+                if ((rows[i] & bit) > 0 ||
+                    (cols[j] & bit) > 0 ||
+                    (squares[squareIdx] & bit) > 0) {
+
+                    return false;
+                }
+
+                // mark as seen
+                // OR with bit at the particular location to mark
+                rows[i] |= bit;
+                cols[j] |= bit;
+                squares[squareIdx] |= bit;
+            }
+        }
+        return true;
+    }
+}
